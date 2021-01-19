@@ -109,8 +109,8 @@ div {
 			Contact : (+91) 9432672043 </h3>
 		</div>
 		<p> Date : <span id="today"></span> </p>
-		<p>Hello </p>
-		<p> <span id="guest">_____</span>, contact :  <span id="cont">_____</span>,  GUEST ID : <span id="serial"></span></p>
+		<p>Hello 
+		<span id="guest">_____</span>, contact :  <span id="cont">_____</span>,  GUEST ID : <span id="serial"></span></p>
 		<p> We have received a sum of Rs <span id="amount"></span> as (an advance)/(full payment) for booking of Chandernagore Guest House, as per the following details : </p>
 		<table style="width:100%" border="1px solid black">
 		  <tr>
@@ -159,7 +159,7 @@ div {
 		<table style="width:50%" border= "1px Solid black">
 			<tr>
 				<td>ROOM SE </td>
-				<td>Rs 840/- per day</td>
+				<td>Rs &nbsp&nbsp840/- per day</td>
 			</tr>
 			<tr>
 				<td>ROOM SW </td>
@@ -259,7 +259,7 @@ div {
 			var x = a.getTime() - b.getTime(); 
 			daysNE = x / (1000 * 3600 * 24);
 			nightNE = daysNE; 
-			var res =  "Rs " +  String(daysNE * PRICENE) + "/-";
+			var res =  "+ Rs " +  String(daysNE * PRICENE) + "/-";
 			document.getElementById("r1").innerHTML = res;
 		}
 
@@ -271,7 +271,7 @@ div {
 			var x = a.getTime() - b.getTime(); 
 			daysNW = x / (1000 * 3600 * 24);
 			nightNW = daysNW;
-			var res =  "Rs " + String(daysNW * PRICENW) + "/-";
+			var res =  "+ Rs " + String(daysNW * PRICENW) + "/-";
 			document.getElementById("r2").innerHTML = res;
 
 		}
@@ -282,7 +282,7 @@ div {
 			var x = a.getTime() - b.getTime(); 
 			daysSE = x / (1000 * 3600 * 24); 
 			nightSE = daysSE;
-			var res =  "Rs " + String(daysSE * PRICESE) + "/-";
+			var res =  "+ Rs " + String(daysSE * PRICESE) + "/-";
 			document.getElementById("r3").innerHTML = res;
 		}
 		if(!Number.isNaN(dateSW)) {
@@ -292,7 +292,7 @@ div {
 			var x = a.getTime() - b.getTime(); 
 			daysSW = x / (1000 * 3600 * 24); 
 			nightSW = daysSW;
-			var res =  "Rs " + String(daysSW * PRICESW) + "/-";
+			var res =  "+ Rs " + String(daysSW * PRICESW) + "/-";
 			document.getElementById("r4").innerHTML = res;
 		}
 
@@ -307,22 +307,23 @@ div {
 		var nighttotal = 200 * night;
 		total+=nighttotal;
 		if(total >= 10000) {
-			document.getElementById("d7").innerHTML = "Discount Applied 5% on total = " + total;
+			document.getElementById("d7").innerHTML = "Discount Applied 5% on total.";
 			var dis = .05 * total;
-			document.getElementById("r7").innerHTML = "Rs " + (total - dis) + "/-";
+			document.getElementById("r7").innerHTML = "- Rs " + (total - dis) + "/-";
 			total -= dis;
 		}
 		else {
-			document.getElementById("d7").innerHTML = "Discount will be applied if total >= Rs 10,000";
+			document.getElementById("d7").innerHTML = "Discount will be applied if total >= Rs 10,000 /-";
 		}
-		
-		document.getElementById("d6").innerHTML = night + " nights stayed at Chandernagore Guest House";
-		document.getElementById("r6").innerHTML = "Rs " + nighttotal + "/-";
+		var tense = "";
+		if(night > 1)tense = "s";
+		document.getElementById("d6").innerHTML = night + " night" + tense;
+		document.getElementById("r6").innerHTML = "+ Rs " + nighttotal + "/-";
 
 		if(additionalDiscount <= 0) document.getElementById("d8").innerHTML = "No additional Discount.";
 		else {
-			document.getElementById("d8").innerHTML = "Additional Discount of Rs " + additionalDiscount;
-			document.getElementById("r8").innerHTML =  "Rs " + (total - additionalDiscount) + "/-";
+			document.getElementById("d8").innerHTML = "Additional Discount of Rs " + additionalDiscount + "/-";
+			document.getElementById("r8").innerHTML =  "- Rs " + (total - additionalDiscount) + "/-";
 			total -= additionalDiscount;
 		}
 		document.getElementById("total").innerHTML = total ;
