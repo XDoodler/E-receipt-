@@ -58,6 +58,9 @@ div {
     display: none;
   }
 }
+#numeric {
+	text-align: right;
+}
 
 </style>
 	<script>
@@ -93,6 +96,7 @@ div {
 	From : <input type="date" name="date3" id="date3" /> To : <input type="date" name="date3A" id="date3A" /></p>
 	<p><label> Enter dates for South West : </label>
 	From : <input type="date" name="date4" id="date4" /> To : <input type="date" name="date4A" id="date4A" /></p>
+	<input type="number" name="extra" id="extra" placeholder="Enter Extra guests" />
 	<input type="number" name="night" id="night" placeholder="Enter number of nights" />
 	<input type="number" name="discount" id="discount" placeholder="Enter additional discount"/>
 
@@ -121,61 +125,65 @@ div {
 		  <tr>
 		    <td>NE</td>
 		    <td><span id="d1"></span></td>
-		    <td><span id="r1"></span></td>
+		    <td id="numeric"><span id="r1"></span></td>
 		  </tr>
 		  <tr>
 		    <td>NW</td>
 		    <td><span id="d2"></span></td>
-		    <td><span id="r2"></span></td>
+		    <td id="numeric"><span id="r2"></span></td>
 		  </tr>
 		  <tr>
 		    <td>SE</td>
 		    <td><span id="d3"></span></td>
-		    <td><span id="r3"></span></td>
+		    <td id="numeric"><span id="r3"></span></td>
 		  </tr>
 		  <tr>
 		    <td>SW</td>
 		    <td><span id="d4"></span></td>
-		    <td><span id="r4"></span></td>
+		    <td id="numeric"><span id="r4"></span></td>
 		  </tr>
 		    <td>Night Charges</td>
 		    <td><span id="d6"></span></td>
-		    <td><span id="r6"></span></td>
+		    <td id="numeric"><span id="r6"></span></td>
+		  </tr>
+		  <tr>
+		    <td>Extra Guests</td>
+		    <td><span id="d9"></span></td>
+		    <td id="numeric"><span id="r9"></span></td>
 		  </tr>
 		  <tr>
 		    <td>Discount</td>
 		    <td><span id="d7"></span></td>
-		    <td><span id="r7"></span></td>
+		    <td id="numeric"><span id="r7"></span></td>
 		  </tr>
 		  <tr>
 		    <td>Extra Discount</td>
 		    <td><span id="d8"></span></td>
-		    <td><span id="r8"></span></td>
+		    <td id="numeric"><span id="r8"></span></td>
 		  </tr>
 		</table>
-		<p>TOTAL AMOUNT : Rs <span id="total"></span> /-</p>
-		<p id="tobepaid"> </p>
-		<h4> <u>TARIFF</u> </h4>
-		<table style="width:50%" border= "1px Solid black">
+		<p><u>TOTAL AMOUNT : Rs <span id="total"></span></u> /- &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<u><span id="tobepaid">></span></u></p>
+		<h4 > <u>TARIFF</u> </h4>
+		<table style="width:50%" border= "2px solid black">
 			<tr>
 				<td>ROOM SE </td>
-				<td>Rs &nbsp&nbsp840/- per day</td>
+				<td id="numeric">Rs &nbsp&nbsp840/- per day</td>
 			</tr>
 			<tr>
 				<td>ROOM SW </td>
-				<td>Rs 1040/- per day</td>
-			</tr>
-			<tr>
-				<td>ROOM NE </td>
-				<td>Rs 1260/- per day</td>
+				<td id="numeric">Rs 1040/- per day</td>
 			</tr>
 			<tr>
 				<td>ROOM NW </td>
-				<td>Rs 1040/- per day</td>
+				<td id="numeric">Rs 1040/- per day</td>
+			</tr>
+			<tr>
+				<td>ROOM NE </td>
+				<td id="numeric">Rs 1260/- per day</td>
 			</tr>
 			<tr>
 				<td>TOTAL </td>
-				<td>Rs 4180/- per day</td>
+				<td id="numeric">Rs 4180/- per day</td>
 			</tr>
 		</table>
 
@@ -303,13 +311,19 @@ div {
 		if(!Number.isNaN(dateSE)) total += (PRICESE * daysSE);
 		if(!Number.isNaN(dateSW)) total += (PRICESW * daysSW);
 		night = document.getElementById("night").value;
+		console.log(night);
 		var additionalDiscount = document.getElementById("discount").value;
 		var nighttotal = 200 * night;
-		total+=nighttotal;
+		total += nighttotal;
+
+		var extraG = document.getElementById("extra").value;
+		var extratotal = 200 * extraG;
+		total += extratotal;
+
 		if(total >= 10000) {
 			document.getElementById("d7").innerHTML = "Discount Applied 5% on total.";
 			var dis = .05 * total;
-			document.getElementById("r7").innerHTML = "- Rs " + (total - dis) + "/-";
+			document.getElementById("r7").innerHTML = "- Rs " + (dis) + "/-";
 			total -= dis;
 		}
 		else {
@@ -320,10 +334,15 @@ div {
 		document.getElementById("d6").innerHTML = night + " night" + tense;
 		document.getElementById("r6").innerHTML = "+ Rs " + nighttotal + "/-";
 
+		var tense = "";
+		if(extraG > 1)tense = "s";
+		document.getElementById("d9").innerHTML = extraG + " extra guest" + tense;
+		document.getElementById("r9").innerHTML = "+ Rs " + extratotal + "/-";
+
 		if(additionalDiscount <= 0) document.getElementById("d8").innerHTML = "No additional Discount.";
 		else {
 			document.getElementById("d8").innerHTML = "Additional Discount of Rs " + additionalDiscount + "/-";
-			document.getElementById("r8").innerHTML =  "- Rs " + (total - additionalDiscount) + "/-";
+			document.getElementById("r8").innerHTML =  "- Rs " + (additionalDiscount) + "/-";
 			total -= additionalDiscount;
 		}
 		document.getElementById("total").innerHTML = total ;
