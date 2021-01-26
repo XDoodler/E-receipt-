@@ -152,15 +152,16 @@ div {
 		    <td id="numeric"><span id="r9"></span></td>
 		  </tr>
 		  <tr>
-		    <td>Discount</td>
-		    <td><span id="d7"></span></td>
-		    <td id="numeric"><span id="r7"></span></td>
-		  </tr>
-		  <tr>
 		    <td>Extra Discount</td>
 		    <td><span id="d8"></span></td>
 		    <td id="numeric"><span id="r8"></span></td>
 		  </tr>
+		  <tr>
+		    <td>Discount</td>
+		    <td><span id="d7"></span></td>
+		    <td id="numeric"><span id="r7"></span></td>
+		  </tr>
+		  
 		</table>
 		<p><u>TOTAL AMOUNT : Rs <span id="total"></span></u> /- &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<u><span id="tobepaid">></span></u></p>
 		<h4 > <u>TARIFF</u> </h4>
@@ -320,15 +321,7 @@ div {
 		var extratotal = 200 * extraG;
 		total += extratotal;
 
-		if(total >= 10000) {
-			document.getElementById("d7").innerHTML = "Discount Applied 5% on total.";
-			var dis = .05 * total;
-			document.getElementById("r7").innerHTML = "- Rs " + (dis) + "/-";
-			total -= dis;
-		}
-		else {
-			document.getElementById("d7").innerHTML = "Discount will be applied if total >= Rs 10,000 /-";
-		}
+		
 		var tense = "";
 		if(night > 1)tense = "s";
 		document.getElementById("d6").innerHTML = night + " night" + tense;
@@ -345,6 +338,17 @@ div {
 			document.getElementById("r8").innerHTML =  "- Rs " + (additionalDiscount) + "/-";
 			total -= additionalDiscount;
 		}
+
+		if(total >= 10000) {
+			document.getElementById("d7").innerHTML = "Discount Applied 5% on total.";
+			var dis = .05 * total;
+			document.getElementById("r7").innerHTML = "- Rs " + (dis) + "/-";
+			total -= dis;
+		}
+		else {
+			document.getElementById("d7").innerHTML = "Discount will be applied if total >= Rs 10,000 /-";
+		}
+
 		document.getElementById("total").innerHTML = total ;
 		document.getElementById("tobepaid").innerHTML= "Amount to be Paid = Rs " + (total - GuestPaid) + "/-";
 
