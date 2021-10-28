@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chandernagore Guest House (E-Receipt)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+    <script type="text/javascript" src="cgr_data.json"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+    <!-- jQuery library -->
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+input[type=text],input[type=number], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+input[type=date], select {
+  width: 30%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#butt {
+  width: 100%;
+  background-color: #af8585;
+  color: #f8f8f8;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#butt1 {
+  width: 50%;
+  background-color: white;
+  color: red;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#printb {
+  background-color: red;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#butt:hover {
+  background-color: #9c453a;
+  color: white;
+  font-display: block;
+}
+::placeholder {
+  color: rgb(107, 107, 110);
+  font-size: 1rem;
+}
+
+#form {
+  border-radius: 5px;
+  background-color: #ecd5d5;
+  padding: 20px;
+}
+#r {
+  border-radius: 5px;
+  padding: 20px;
+}
+@media print {
+  #printb {
+    display: none;
+  }
+}
+#numeric {
+    text-align: right;
+}
+#banner {
+    margin-left: 10%;
+    padding: 10px;
+    border-radius: 40px;
+    background-color: rgb(0, 0, 0);
+    font-size: 1rem;
+    color: rgb(224, 186, 186);
+    border:  none;
+}
+#ps {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 40px;
+    background-color: white;
+    font-size: 1rem;
+    color: rgb(70, 67, 67);
+    border:  none;
+}
+#imp {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 40px;
+    background-color: white;
+    font-size: 1rem;
+    color: rgb(107, 8, 8);
+    border:  none;
+}
+#pay {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 1rem;
+    color: rgb(107, 8, 8);
+    border:  2px solid black;
+}
+#flexy {
+    width: 100%; 
+    display: flex;
+     gap: 10px;
+}
+#warning {
+    color:  #eed202 ;
+    font-size: 1.2rem;
+}
+
+a {
+    color: blue;
+    padding: 20px;
+}
+#dataInfo {
+    margin-top: 5px;
+    padding: 5px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 1rem;
+    color: rgb(107, 8, 8);
+    border:  2px solid black;
+    visibility: hidden;
+}
+#imp:hover {
+  background-color: #9c453a;
+  color: white;
+  font-display: block;
+}
+
+
+
+</style>
+    <script>
+        $(document).ready(function(){
+          $("#butt").click(function(){
+            // $("div#form").hide();
+          });
+        });
+        $(document).ready(function(){
+            // $("#r").hide();
+            $("#butt").click(function(){
+            $("div#r").show();
+          });
+        });
+    </script>
+</head>
+
+<body style="overflow-x: hidden;">
+<div style="width: 100%; display: table;">
+<div style="display: table-row">
+    <div id="form" style="width: 50%; display: table-cell;">
+    <div id = "flexy" >
+        <label class="container">Mr.
+            <input type="radio" name="radio" id = "radio" value="Mr.">
+          </label>
+          <label class="container">Mrs.
+            <input type="radio" name="radio" id = "radio" value="Mrs.">
+          </label>
+          <label class="container">Ms.
+            <input type="radio" name="radio" id = "radio" value="Ms.">
+          </label>
+          <label class="container">Dr.
+            <input type="radio" name="radio" id = "radio" value="Dr.">
+          </label>
+        <input type="text" name="GuestName" id="GuestName" placeholder="Hi, what is the name of your guest ?" />
+        <input type="number" name="contact" id="contact" placeholder="Contact ?" />
+    </div>
+        <input type="number" name="paid" id="paid" placeholder="Did your guest pay you any advance? Put that here" />
+    <hr></hr>
+
+    <div>
+        <button id = "banner"> NE </button>
+        <input type="date" name="date1" id="date1" /> - <input type="date" name="date1A" id="date1A" /> <br>
+        <button id = "banner">NW</button>
+        <input type="date" name="date2" id="date2" /> - <input type="date" name="date2A" id="date2A" /> <br>
+        <button id = "banner">SE </button>
+        <input type="date" name="date3" id="date3" /> - <input type="date" name="date3A" id="date3A" /> <br>
+        <button id = "banner">SW </button>
+        <input type="date" name="date4" id="date4" /> - <input type="date" name="date4A" id="date4A" /> <br>
+    </div>
+    <hr></hr>
+
+
+    <div id = "flexy">
+        <input type="number" name="extra" id="extra" placeholder="Have extra guests ? Kindly enter" />
+        <input type="number" name="night" id="night" placeholder="Night stays? " />
+        </div>
+        <input type="number" name="discount" id="discount" placeholder="Additional discount? Kindly enter the amount"/>
+    <button id="butt" onclick="go()">Generate the E-receipt</button>
+    <div id = "dataInfo">
+    </div>
+
+    <button id="butt1"><a href = "https://api.apispreadsheets.com/data/19864/" >Check all records</a></button>
+<button id="butt1"> <a href = "https://www.apispreadsheets.com/files">Download records</a></button>
+
+</div>
+    <div id="r" style="display: table-cell;">
+        <!--<div id="editor"></div>
+        <button id="cmd">generate PDF</button>-->
+        <div align = "center">
+            <button id="printb" onClick="printDiv('r')">Print / Save as Pdf</button>
+            <h3>CHANDANERGORE GUEST HOUSE<br>
+            Barasat Chakraborty para<br>
+            Chandernagore - 712136<br>
+            &#x260E; (+91) 9432-672-043 </h3>
+        </div>
+        <table style="width:100%" border="1px solid black">
+        <p> Date : <span id="today"></span> </p>
+        <p>Hi, 
+        <span id="guest"> [NOT YET FILLED]</span> [<span id="serial"></span>] &#xb7; &#x260E;  <span id="cont">[NOT YET FILLED]</span></p>
+        <p> We have received a sum of Rs <span id="amount"></span> as (an advance)/(full payment) for booking of Chandernagore Guest House, as per the following details : </p>
+          <tr>
+            <th>ROOM</th>
+            <th>DATES</th> 
+            <th>AMOUNT</th>
+          </tr>
+          <tr>
+            <td>NE</td>
+            <td><span id="roomInformationNE"></span></td>
+            <td id="numeric"><span id="r1"></span></td>
+          </tr>
+          <tr>
+            <td>NW</td>
+            <td><span id="roomInformationNW"></span></td>
+            <td id="numeric"><span id="r2"></span></td>
+          </tr>
+          <tr>
+            <td>SE</td>
+            <td><span id="roomInformationSE"></span></td>
+            <td id="numeric"><span id="r3"></span></td>
+          </tr>
+          <tr>
+            <td>SW</td>
+            <td><span id="roomInformationSW"></span></td>
+            <td id="numeric"><span id="r4"></span></td>
+          </tr>
+            <td>Night Charges</td>
+            <td><span id="d6"></span></td>
+            <td id="numeric"><span id="r6"></span></td>
+          </tr>
+          <tr>
+            <td>Extra Guests</td>
+            <td><span id="d9"></span></td>
+            <td id="numeric"><span id="r9"></span></td>
+          </tr>
+          <tr>
+            <td>Extra Discount</td>
+            <td><span id="d8"></span></td>
+            <td id="numeric"><span id="r8"></span></td>
+          </tr>
+          <tr>
+            <td>Discount</td>
+            <td><span id="d7"></span></td>
+            <td id="numeric"><span id="r7"></span></td>
+          </tr>
+          
+        </table>
+        <div style=" width: 100%; display: table-row;"> 
+            <div style="width: 50%; display: table-cell;">
+                <button id = "pay">Total bill of your stay: Rs <span id="total"> /- </span></button>
+            </div>
+            <div style="width: 50%; display: table-cell;">
+                <button id = "pay"> <span id="tobepaid"></span> </button></span>
+            </div>
+        </div>
+    <div style="width: 100%; display: table-row;">
+    <div style="width: 50%; display: table-cell;">
+        <table border= "1px solid black">
+            <tr>
+                <td>Room SE cost </td>
+                <td id="numeric">Rs &nbsp&nbsp840/- per day</td>
+            </tr>
+            <tr>
+                <td>Room SW cost</td>
+                <td id="numeric">Rs 1040/- per day</td>
+            </tr>
+            <tr>
+                <td>Room NW cost</td>
+                <td id="numeric">Rs 1040/- per day</td>
+            </tr>
+            <tr>
+                <td>Room NE cost</td>
+                <td id="numeric">Rs 1260/- per day</td>
+            </tr>
+            <tr>
+                <td>Book entire guest house </td>
+                <td id="numeric">Rs 4180/- per day</td>
+            </tr>
+        </table>
+        </div>
+        <div style="width: 50%; display: table-cell;">
+            <button id ="ps"> * Extra guests @Rs 200/- per guest </button>
+            <button id = "ps"> * Night Charge @Rs 200/- per night </button>
+            <button id = "ps"> * Discount 5% over Rs 10,000 </button>
+        </div>
+    </div>
+
+<div>
+    <span  id = "warning">&#x26A0;</span> <button id ="imp"> Upload any Govt. photo id for verification to the link <a href = "https://forms.gle/dCN4Sw7xs4CYyLb9A"> click here </a> </button> <br>
+    <span  id = "warning">&#x26A0;</span><button id ="imp"> Carry along RT-PCR report with negative result or dose-2 vaccination certificate </button> <br>
+<span  id = "warning">&#x26A0;</span>
+<button id ="imp">Kindly pay 20% of the amount within 48 hours to confirm your booking </button>
+    
+    <button id ="pay"> You can pay via Gpay, PhonePe, <br> PayTM or any other app <br>  UPI ID : elencimankundu@oksbi</button> <button id = "pay"> Transfer fund to ICICI Bank of India<br>
+        Savings account no.: 040501507343<br>
+        IFSC Code: ICIC0000405</button>
+</div>
+<button id ="imp"> For more information or feedbacks, mail us at elencimankundu@gmail.com or <br>call us at (+91)9432-672-043 </button>
+        <h3> Chandernagore Guest House </h3>
+        <a href = "https://www.google.com/travel/hotels/Chandannagar/entity/CgoI5Zr5sP_hx_hpEAE/reviews?g2lb=4655902%2C4639572%2C4597339%2C4515404%2C4270442%2C4317915%2C4640247%2C4306835%2C4596364%2C4401769%2C4524133%2C2503771%2C4258168%2C4644487%2C2502548%2C2503781%2C4605861%2C4419364%2C4371334%2C4624411%2C4270859%2C4291517%2C4284970&hl=en-IN&gl=in&ssta=1&ap=aAE&q=chandernagore%20guest%20house&rp=EOWa-bD_4cf4aRDtocmH-6Ss6z0Q1PH50oPC25oIELXIzNf_hOvy5gE4AUAASAKiARlDaGFuZGFubmFnYXIsIFdlc3QgQmVuZ2FswAEDyAEA&ictx=1&utm_campaign=sharing&utm_medium=link&utm_source=htls&ts=CAESABogCgIaABIaEhQKBwjlDxAKGB0SBwjlDxAKGB4YATICEAAqCQoFOgNJTlIaAA&ved=0CAAQ5JsGahcKEwjQy5ym1OfzAhUAAAAAHQAAAAAQEw">Any feedback?</a>
+        <a href = "https://www.google.com/travel/hotels/Chandannagar/entity/CgoI5Zr5sP_hx_hpEAE/photos?g2lb=4655902%2C4639572%2C4597339%2C4515404%2C4270442%2C4317915%2C4640247%2C4306835%2C4596364%2C4401769%2C4524133%2C2503771%2C4258168%2C4644487%2C2502548%2C2503781%2C4605861%2C4419364%2C4371334%2C4624411%2C4270859%2C4291517%2C4284970&hl=en-IN&gl=in&ssta=1&ap=aAE&q=chandernagore%20guest%20house&rp=EOWa-bD_4cf4aRDtocmH-6Ss6z0Q1PH50oPC25oIELXIzNf_hOvy5gE4AUAASAKiARlDaGFuZGFubmFnYXIsIFdlc3QgQmVuZ2FswAEDyAEA&ictx=1&utm_campaign=sharing&utm_medium=link&utm_source=htls&ts=CAESABogCgIaABIaEhQKBwjlDxAKGB0SBwjlDxAKGB4YATICEAAqCQoFOgNJTlIaAA&ved=0CAAQ5JsGahcKEwjQy5ym1OfzAhUAAAAAHQAAAAAQJA">View photos</a>
+        <a href = "https://www.google.com/travel/hotels/Chandannagar/entity/CgoI5Zr5sP_hx_hpEAE/location?g2lb=4655902%2C4639572%2C4597339%2C4515404%2C4270442%2C4317915%2C4640247%2C4306835%2C4596364%2C4401769%2C4524133%2C2503771%2C4258168%2C4644487%2C2502548%2C2503781%2C4605861%2C4419364%2C4371334%2C4624411%2C4270859%2C4291517%2C4284970&hl=en-IN&gl=in&ssta=1&ap=aAE&q=chandernagore%20guest%20house&rp=EOWa-bD_4cf4aRDtocmH-6Ss6z0Q1PH50oPC25oIELXIzNf_hOvy5gE4AUAASAKiARlDaGFuZGFubmFnYXIsIFdlc3QgQmVuZ2FswAEDyAEA&ictx=1&utm_campaign=sharing&utm_medium=link&utm_source=htls&ts=CAESABogCgIaABIaEhQKBwjlDxAKGB0SBwjlDxAKGB4YATICEAAqCQoFOgNJTlIaAA&ved=0CAAQ5JsGahcKEwjQy5ym1OfzAhUAAAAAHQAAAAAQGw">Get location</a>
+    </div>
+
+</div>
+
+</div>
+<script type="text/javascript">
+    var GuestSerial = "", dateNE = "", dateNW = "", dateSE = "", dateSW = "", total = "", GuestName = "", GuestPaid = "", GuestContact = "", extraG = "", additionalDiscount = "", night = "";
+    function go() {
+
+        // CHANGE BY ADMIN ONLY
+        var PRICENE = 1260;
+        var PRICENW = 1040;
+        var PRICESE = 840;
+        var PRICESW = 1040;
+        // CHANGE BY ADMIN ONLY
+
+         var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];;
+        var date = new Date();
+        document.getElementById('today').innerHTML = date.getDate() + " " + months[date.getMonth()] + ", " + date.getFullYear();
+
+        var ini = "";
+        var gen = document.getElementsByName('radio');
+        for(var i = 0; i < gen.length; i++){
+            if(gen[i].checked){
+                ini = gen[i].value;
+            }
+        }
+
+        var Name = document.getElementById("GuestName").value;
+        GuestName = String(Name);
+
+        var con = document.getElementById("contact").value;
+        GuestContact = String(con);
+
+        var serialNo = GuestName.substring(0,3) + GuestContact.substring(7);
+        GuestSerial = String(serialNo);
+
+        var amt = document.getElementById("paid").value;
+        GuestPaid = String(amt);
+
+        var d1 = document.getElementById("date1").value;
+        var d1A = document.getElementById("date1A").value;
+        var ned1 = new Date(d1);
+        var ned2 = new Date(d1A);
+        if(d1.length==0 || d1A.length==0) dateNE = "";
+        else dateNE = ned1.getDate() + ' ' + months[ned1.getMonth()] + ", " + ned1.getFullYear() + " [9:00 AM] to " + ned2.getDate() + ' ' + months[ned2.getMonth()] + ", " + ned2.getFullYear() + " [9:00 AM]";
+
+        var d2 = document.getElementById("date2").value;
+        var d2A = document.getElementById("date2A").value;
+        ned1 = new Date(d2);
+        ned2 = new Date(d2A);
+        if(d2.length==0 || d2A.length==0) dateNW = "";
+        else dateNW = ned1.getDate() + ' ' + months[ned1.getMonth()] + ", " + ned1.getFullYear() + " [9:00 AM] to " + ned2.getDate() + ' ' + months[ned2.getMonth()] + ", " + ned2.getFullYear() + " [9:00 AM]";
+
+        var d3 = document.getElementById("date3").value;
+        var d3A = document.getElementById("date3A").value;
+        ned1 = new Date(d3);
+        ned2 = new Date(d3A);
+        if(d3.length==0 || d3A.length==0) dateSE= "";
+        else dateSE = ned1.getDate() + ' ' + months[ned1.getMonth()] + ", " + ned1.getFullYear() + " [9:00 AM] to " + ned2.getDate() + ' ' + months[ned2.getMonth()] + ", " + ned2.getFullYear() + " [9:00 AM]";
+
+        var d4 = document.getElementById("date4").value;
+        var d4A = document.getElementById("date4A").value;
+        ned1 = new Date(d4);
+        ned2 = new Date(d4A);
+        if(d4.length==0 || d4A.length==0) dateSW = "";
+        else dateSW = ned1.getDate() + ' ' + months[ned1.getMonth()] + ", " + ned1.getFullYear() + " [9:00 AM] to " + ned2.getDate() + ' ' + months[ned2.getMonth()] + ", " + ned2.getFullYear() + " [9:00 AM]";
+
+        document.getElementById("serial").innerHTML = GuestSerial;
+        document.getElementById("guest").innerHTML = ini + " " + GuestName;
+        document.getElementById("cont").innerHTML = GuestContact;
+        document.getElementById("amount").innerHTML = GuestPaid;
+        var daysNE = 0, daysNW = 0, daysSE = 0, daysSW = 0;
+        var nightNE = 0, nightNW = 0, nightSE = 0, nightSW = 0;
+
+        if(!Number.isNaN(dateNE)) {
+            document.getElementById("roomInformationNE").innerHTML = dateNE; 
+            var a = new Date(String(d1A));
+            var b = new Date(String(d1));
+            var x = a.getTime() - b.getTime(); 
+            daysNE = x / (1000 * 3600 * 24);
+            nightNE = daysNE; 
+            var res =  "+ Rs " +  String(daysNE * PRICENE) + "/-";
+            document.getElementById("r1").innerHTML = res;
+        }
+
+
+        if(!Number.isNaN(dateNW)) {
+            document.getElementById("roomInformationNW").innerHTML = dateNW;
+            var a = new Date(String(d2A));
+            var b = new Date(String(d2));
+            var x = a.getTime() - b.getTime(); 
+            daysNW = x / (1000 * 3600 * 24);
+            nightNW = daysNW;
+            var res =  "+ Rs " + String(daysNW * PRICENW) + "/-";
+            document.getElementById("r2").innerHTML = res;
+
+        }
+        if(!Number.isNaN(dateSE)) {
+            document.getElementById("roomInformationSE").innerHTML = dateSE;
+            var a = new Date(String(d3A));
+            var b = new Date(String(d3));
+            var x = a.getTime() - b.getTime(); 
+            daysSE = x / (1000 * 3600 * 24); 
+            nightSE = daysSE;
+            var res =  "+ Rs " + String(daysSE * PRICESE) + "/-";
+            document.getElementById("r3").innerHTML = res;
+        }
+        if(!Number.isNaN(dateSW)) {
+            document.getElementById("roomInformationSW").innerHTML = dateSW;
+            var a = new Date(String(d4A));
+            var b = new Date(String(d4));
+            var x = a.getTime() - b.getTime(); 
+            daysSW = x / (1000 * 3600 * 24); 
+            nightSW = daysSW;
+            var res =  "+ Rs " + String(daysSW * PRICESW) + "/-";
+            document.getElementById("r4").innerHTML = res;
+        }
+
+        total = 0, nighttotal = 0, night = 0;
+
+        if(!Number.isNaN(dateNE)) total += (PRICENE * daysNE);
+        if(!Number.isNaN(dateNW)) total += (PRICENW * daysNW);
+        if(!Number.isNaN(dateSE)) total += (PRICESE * daysSE);
+        if(!Number.isNaN(dateSW)) total += (PRICESW * daysSW);
+        night = document.getElementById("night").value;
+        console.log(night);
+       	additionalDiscount = document.getElementById("discount").value;
+        var nighttotal = 200 * night;
+        total += nighttotal;
+
+        extraG = document.getElementById("extra").value;
+        var extratotal = 200 * extraG;
+        total += extratotal;
+
+        
+        var tense = "";
+        if(night > 1)tense = "s";
+        document.getElementById("d6").innerHTML = night + " night" + tense;
+        document.getElementById("r6").innerHTML = "+ Rs " + nighttotal + "/-";
+
+        var tense = "";
+        if(extraG > 1)tense = "s";
+        document.getElementById("d9").innerHTML = extraG + " extra guest" + tense;
+        document.getElementById("r9").innerHTML = "+ Rs " + extratotal + "/-";
+
+        if(additionalDiscount <= 0) document.getElementById("d8").innerHTML = "No additional Discount.";
+        else {
+            document.getElementById("d8").innerHTML = "Additional Discount of Rs " + additionalDiscount + "/-";
+            document.getElementById("r8").innerHTML =  "- Rs " + (additionalDiscount) + "/-";
+            total -= additionalDiscount;
+        }
+
+        if(total >= 10000) {
+            document.getElementById("d7").innerHTML = "Discount Applied 5% on total.";
+            var dis = .05 * total;
+            document.getElementById("r7").innerHTML = "- Rs " + (dis) + "/-";
+            total -= dis;
+        }
+        else {
+            document.getElementById("d7").innerHTML = "Discount will be applied if total >= Rs 10,000 /-";
+        }
+
+        document.getElementById("total").innerHTML = total ;
+        document.getElementById("tobepaid").innerHTML= "To be paid: Rs " + (total - GuestPaid) + "/-";
+
+        var dataInfo =  ini + " " + GuestName + "<br> contact - " + GuestContact + "<br> has paid Rs " + GuestPaid + "/- as advance" +
+        "<br> Booked Chandernagore guest house for the dates " + 
+        "<br>ROOM NE ->"+ (!Number.isNaN(dateNE)? dateNE + "" : "Not booked") +
+        "<br>ROOM NW ->"+ (!Number.isNaN(dateNW)? dateNW + "" : "Not booked") +
+        "<br>ROOM SE ->"+ (!Number.isNaN(dateSE)? dateSE + "" : "Not booked") +
+        "<br>ROOM SW ->"+ (!Number.isNaN(dateSW)? dateSW + "" : "Not booked") +
+        "<br>Extra Night -> " + night +
+        "<br>Extra guest ->" + extraG +
+        "<br>Additional discount->" + additionalDiscount +
+        ". <br>The total bill amount (discounts included) is Rs " +
+        total + ". <br>For a detailed infomation, refer the PDF file";
+        console.log(dataInfo);
+        document.getElementById("dataInfo").innerHTML = dataInfo;
+        document.getElementById("dataInfo").style.visibility = "visible";
+
+ 
+    }
+    function printDiv(divName) {
+     var printContents = document.getElementById(divName).innerHTML;
+     var originalContents = document.body.innerHTML;
+     document.body.innerHTML = printContents;
+     document.title = "CGR - " + GuestSerial + "-" + document.getElementById("guest").innerHTML;
+     window.print();
+     document.body.innerHTML = originalContents;
+fetch("https://api.apispreadsheets.com/data/19864/", {
+	method: "POST",
+	body: JSON.stringify({"data": {"Id":GuestSerial,"Name":GuestName,"Contact":GuestContact,"Advance paid":GuestPaid,"NE":dateNE,"NW":dateNW,"SE":dateSE,"SW":dateSW,"Extra guest": extraG,"Nights stayed": night,"Additional discout":additionalDiscount,"Total amt.":total}}),
+}).then(res =>{
+	if (res.status === 201){
+		// SUCCESS
+console.log("ADDED");
+	}
+	else{
+		// ERROR
+console.log("NOT ADDED");
+	}
+})
+    }
+    function delete() {
+	//https://api.apispreadsheets.com/data/19864/?query=deletefrom19864whereId='value'
+    }
+
+
+</script>
+</body>
+
+</html>
